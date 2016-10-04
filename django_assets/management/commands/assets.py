@@ -27,6 +27,7 @@ from os import path
 import logging
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
+from django.utils import translation
 
 from webassets.script import (CommandError as AssetCommandError,
                               GenericArgparseImplementation)
@@ -37,7 +38,7 @@ from django_assets.manifest import DjangoManifest  # noqa: enables the --manifes
 
 class Command(BaseCommand):
     help = 'Manage assets.'
-	requires_system_checks = False
+    requires_system_checks = False
 
     def add_arguments(self, parser):
         # parser.add_argument('poll_id', nargs='+', type=str)
@@ -52,6 +53,7 @@ class Command(BaseCommand):
         # Due to the use of LaxOptionParser ``args`` now contains all
         # unparsed options, and ``options`` those that the Django command
         # has declared.
+        translation.activate(settings.LANGUAGE_CODE)
 
         # Create log
         log = logging.getLogger('django-assets')
